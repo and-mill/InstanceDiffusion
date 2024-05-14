@@ -6,7 +6,7 @@ Dataset preparation consists of three major steps:
 3. Instance-level text prompt generation
 
 ### Requirements
-- Linux or macOS with Python ≥ 3.8
+- Linux or macOS with Python ≥ 3.8 (and-mill: USE 3.9 INSTEAD)
 - PyTorch ≥ 2.0 and [torchvision](https://github.com/pytorch/vision/) that matches the PyTorch installation.
   Install them together at [pytorch.org](https://pytorch.org) to make sure of this. 
   Note, please check PyTorch version matches that is required by Detectron2.
@@ -19,12 +19,14 @@ Please begin by following the instructions in [INSTALL](https://github.com/frank
 #git clone git@github.com:IDEA-Research/Grounded-Segment-Anything.git
 git subtree add git@github.com:IDEA-Research/Grounded-Segment-Anything.git main --prefix Grounded-Segment-Anything --squash
 cd Grounded-Segment-Anything
-python -m pip install -e segment_anything
+#python -m pip install -e segment_anything
+PIP_CACHE_DIR=/home/host_mueller/cache/ XDG_CACHE_HOME=/home/host_mueller/cache/ TMPDIR=/home/host_mueller/tmp/ pip install --cache-dir=/home/host_mueller/cache/ -e segment_anything
 #git clone https://github.com/IDEA-Research/GroundingDINO.git
 git subtree add https://github.com/IDEA-Research/GroundingDINO.git main --prefix GroundingDINO --squash
 pip install -U openmim
 mim install mmcv
-python -m pip install -e GroundingDINO
+#python -m pip install -e GroundingDINO
+PIP_CACHE_DIR=/home/host_mueller/cache/ XDG_CACHE_HOME=/home/host_mueller/cache/ TMPDIR=/home/host_mueller/tmp/ pip install --cache-dir=/home/host_mueller/cache/ -e GroundingDINO
 #git clone https://github.com/xinyu1205/recognize-anything.git
 git subtree add https://github.com/xinyu1205/recognize-anything.git main --prefix recognize-anything --squash
 pip install -r ./recognize-anything/requirements.txt
@@ -62,23 +64,24 @@ Utilizing a subset of the LAION-400M dataset (5~10M images) should enable the re
 We support training data generation with multiple GPUs and nodes. Executing the following commands will produce instance segmentation masks, detection bounding boxes, and instance-level captions for all images listed in `train_data_path`.
 ```bash
 cd dataset-generation/
-python run_with_submitit_generate_caption.py \
-    --timeout 4000 \
-    --partition learn \
-    --num_jobs 1 \
-    --config ../Grounded-Segment-Anything/GroundingDINO/groundingdino/config/GroundingDINO_SwinT_OGC.py \
-    --ram_checkpoint ../Grounded-Segment-Anything/ram_swin_large_14m.pth \
-    --grounded_checkpoint ../Grounded-Segment-Anything/groundingdino_swint_ogc.pth \
-    --sam_checkpoint ../Grounded-Segment-Anything/sam_vit_h_4b8939.pth \
-    --box_threshold 0.25 \
-    --text_threshold 0.2 \
-    --iou_threshold 0.5 \
-    --device "cuda" \
-    --sam_hq_checkpoint ../Grounded-Segment-Anything/sam_hq_vit_h.pth \
-    --use_sam_hq \
-    --output_dir "/data/home/xudongw/Grounded-Segment-Anything/sample-data-gen/" \
-    --train_data_path train_data.json \
-    --output_dir "train-data" \
+#python run_with_submitit_generate_caption.py \
+#    --timeout 4000 \
+#    --partition learn \
+#    --num_jobs 1 \
+#    --config ../Grounded-Segment-Anything/GroundingDINO/groundingdino/config/GroundingDINO_SwinT_OGC.py \
+#    --ram_checkpoint ../Grounded-Segment-Anything/ram_swin_large_14m.pth \
+#    --grounded_checkpoint ../Grounded-Segment-Anything/groundingdino_swint_ogc.pth \
+#    --sam_checkpoint ../Grounded-Segment-Anything/sam_vit_h_4b8939.pth \
+#    --box_threshold 0.25 \
+#    --text_threshold 0.2 \
+#    --iou_threshold 0.5 \
+#    --device "cuda" \
+#    --sam_hq_checkpoint ../Grounded-Segment-Anything/sam_hq_vit_h.pth \
+#    --use_sam_hq \
+#    --output_dir "/home/host_mueller/mueller/InstanceDiffusion/Grounded-Segment-Anything/sample-data-gen/" \
+#    --train_data_path train_data.json \
+#    --output_dir "train-data" \
+PYTHONPATH="../Grounded-Segment-Anything:../Grounded-Segment-Anything/GroundingDINO" python run_with_submitit_generate_caption.py     --timeout 4000     --partition learn     --num_jobs 1     --config ../Grounded-Segment-Anything/GroundingDINO/groundingdino/config/GroundingDINO_SwinT_OGC.py     --ram_checkpoint ../Grounded-Segment-Anything/ram_swin_large_14m.pth     --grounded_checkpoint ../Grounded-Segment-Anything/groundingdino_swint_ogc.pth     --sam_checkpoint ../Grounded-Segment-Anything/sam_vit_h_4b8939.pth     --box_threshold 0.25     --text_threshold 0.2     --iou_threshold 0.5     --device "cuda"     --sam_hq_checkpoint ../Grounded-Segment-Anything/sam_hq_vit_h.pth     --use_sam_hq     --output_dir "/home/host_mueller/mueller/InstanceDiffusion/Grounded-Segment-Anything/sample-data-gen/"     --train_data_path train_data.json     --output_dir "train-data"  # and-mill
 
 # For each image, a corresponding JSON file is created in the --output_dir. 
 # To compile all file names into a list for model training, use
