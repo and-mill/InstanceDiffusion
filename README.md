@@ -39,6 +39,11 @@ This repository represents a re-implementation of InstanceDiffusion conducted by
 conda create --name instdiff python=3.8 -y
 conda activate instdiff
 
+# and_mill
+conda install -c "nvidia/label/cuda-11.8.0" cuda-toolkit
+pip install https://github.com/Dao-AILab/flash-attention/releases/download/v2.3.3/flash_attn-2.3.3+cu118torch2.0cxx11abiFALSE-cp38-cp38-linux_x86_64.whl
+TMPDIR=/home/host_mueller/tmp/ pip install --cache-dir=/home/host_mueller/cache/ torch xformers torchaudio torchvision
+
 pip install -r requirements.txt
 ```
 
