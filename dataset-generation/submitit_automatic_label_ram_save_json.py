@@ -346,7 +346,11 @@ def get_args_parser():
     parser.add_argument(
         "--use_sam_hq", action="store_true", help="using sam-hq for prediction"
     )
-    parser.add_argument("--input_image", type=str, required=True, help="path to image file")
+    parser.add_argument("--input_image",
+                        type=str,
+                        required=True,
+                        #required=False,
+                        help="path to image file")
     parser.add_argument("--split", default=",", type=str, help="split for text prompt")
     parser.add_argument("--openai_key", type=str, help="key for chatgpt")
     parser.add_argument("--openai_proxy", default=None, type=str, help="proxy for chatgpt")

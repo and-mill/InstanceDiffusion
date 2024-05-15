@@ -41,13 +41,12 @@ conda activate instdiff
 
 # and_mill
 #conda install -c "nvidia/label/cuda-11.8.0" cuda-toolkit
-conda install -c "nvidia/label/cuda-12.1.0" cuda-toolkit
-#pip install https://github.com/Dao-AILab/flash-attention/releases/download/v2.3.3/flash_attn-2.3.3+cu118torch2.0cxx11abiFALSE-cp38-cp38-linux_x86_64.whl  # This only works for correct cu and torch
-PIP_CACHE_DIR=/home/host_mueller/cache/ XDG_CACHE_HOME=/home/host_mueller/cache/ TMPDIR=/home/host_mueller/tmp/ pip uninstall --cache-dir=/home/host_mueller/cache/ -y ninja
-PIP_CACHE_DIR=/home/host_mueller/cache/ XDG_CACHE_HOME=/home/host_mueller/cache/ TMPDIR=/home/host_mueller/tmp/ pip install --cache-dir=/home/host_mueller/cache/ ninja
-
-PIP_CACHE_DIR=/home/host_mueller/cache/ XDG_CACHE_HOME=/home/host_mueller/cache/ TMPDIR=/home/host_mueller/tmp/ pip install --cache-dir=/home/host_mueller/cache/ torch xformers torchaudio torchvision packaging
-PIP_CACHE_DIR=/home/host_mueller/cache/ XDG_CACHE_HOME=/home/host_mueller/cache/ TMPDIR=/home/host_mueller/tmp/ pip install --cache-dir=/home/host_mueller/cache/ -r requirements.txt
+#conda install -c "nvidia/label/cuda-12.1.0" cuda-toolkidft
+conda install pytorch torchvision torchaudio pytorch-cuda=12.1 -c pytorch -c nvidia  # and-mill
+#PIP_CACHE_DIR=/home/host_mueller/cache/ XDG_CACHE_HOME=/home/host_mueller/cache/ TMPDIR=/home/host_mueller/tmp/ pip install --cache-dir=/home/host_mueller/cache/ torch xformers packaging ninja
+pip install torch xformers packaging ninja
+#PIP_CACHE_DIR=/home/host_mueller/cache/ XDG_CACHE_HOME=/home/host_mueller/cache/ TMPDIR=/home/host_mueller/tmp/ pip install --cache-dir=/home/host_mueller/cache/ -r requirements.txt
+pip install -r requirements.txt
 ```
 
 
